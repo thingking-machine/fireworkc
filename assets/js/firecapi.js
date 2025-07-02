@@ -34,20 +34,15 @@ self.onmessage = async function(event) {
         }
 
         // --- 3. Prepare messages for the API call ---
-        const systemInstructionMessage = { role: "system", content: instructionText };
-        let messagesForApi;
+        let textForApi;
 
         // Check if the main thread sent any messages
-        if (messages && Array.isArray(messages) && messages.length > 0) {
+        if (messages && messages.length > 0) {
             // User provided messages: unshift/prepend the fetched system instruction
-            messagesForApi = [systemInstructionMessage, ...messages];
-            console.log('All messages for API:', messagesForApi)
+            textForApi = instructionText + '\n\n' + messages;
+            console.log('All text for API:', textForAPI)
         } else {
-            // No messages from user, or an empty array: use the system instruction and a default user prompt
-            messagesForApi = [
-                systemInstructionMessage,
-                { role: "user", content: "What model are you?" } // Default user prompt
-            ];
+            textForAPI = instructionText + '\n\n' + "What model are you?" // Default user prompt
         }
 
         // --- 4. Prepare the final API payload ---
@@ -72,7 +67,7 @@ self.onmessage = async function(event) {
         // Merge default parameters, then incoming user parameters (which might override temp, max_tokens, etc.),
         const finalApiPayload = {
             ...defaultApiParameters,
-            messages: messagesForApi      // Ensure our carefully constructed messages array is used
+            prompt: textForApi      // Ensure our carefully constructed messages array is used
         };
         console.log('Worker: Here is the final API payload:', finalApiPayload);
 
@@ -105,10 +100,10 @@ self.onmessage = async function(event) {
         const apiData = await apiCallResponse.json();
         console.log('Worker: API call successful, response:', apiData);
 
-        const msgResponse = apiData.choices[0].message // meta's response text in its content.text of it
+        const response = apiData.choices[0].text // meta's response text in its content.text of it
 
         // Send the successful result back to the main thread
-        self.postMessage({ type: 'success', data: msgResponse });
+        self.postMessage({ type: 'success', data: response });
 
     } catch (error) {
         console.error('Worker: An error occurred:', error.message, error); // Log the full error object for more details

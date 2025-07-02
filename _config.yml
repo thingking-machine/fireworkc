@@ -7,19 +7,19 @@ include:
   - README.md
   - LICENSE.md
 url: https://thingking-machine.github.io
-baseurl: /fireworks
+baseurl: /fireworkc
 
 title: Thingking Machine
 description: A machine is a thing. Things can not think. ...but some of them can thingk!
 
 machine:
   name: Thingking-Machine
-  instructions_file: thingking.txt
+  instructions_file: complete_thingking.txt
   token: fireworks.txt
-  apiUrl: https://api.fireworks.ai/inference/v1/chat/completions
+  apiUrl: https://api.fireworks.ai/inference/v1/completions
 
 app:
-  worker_name: fireapi.js
+  worker_name: firecapi.js
 
 lm:
   model: llama-v3p1-8b-instruct

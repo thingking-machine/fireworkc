@@ -308,10 +308,11 @@ class MachineApp {
     
     try {
       const cmjMessages = platoHtmlToCmj(htmlContent);
+      const multilogText = platoHtmlToPlatoText(htmlContent);
       const workerPayload = {
         config: this.settings.machine,
         settings: this.settings.llm,
-        messages: cmjMessages
+        messages: multilogText
       };
       
       console.log('Launching LLM worker with payload:', workerPayload);
@@ -349,13 +350,13 @@ class MachineApp {
   _processLlmResponse = (llmResponseData, originalCmjMessages) => {
     try {
       console.log('Worker task successful. LLM Response:', llmResponseData);
-      if (!llmResponseData || !llmResponseData.content || llmResponseData.content.length === 0) {
+      if (!llmResponseData || llmResponseData.length === 0) {
         throw new Error('LLM response is missing message content.');
       }
       
-      const desoupedText = llmSoupToText(llmResponseData.content.trim());
+      const desoupedText = llmSoupToText(llmResponseData);
       const newCmjMessage = {
-        role: llmResponseData.role,
+        role: 'assistant',
         name: this.settings.machine.name,
         content: desoupedText
       };
