@@ -74,7 +74,7 @@ class MachineApp {
       if (['temperature', 'top_p'].includes(key)) {
         const numValue = parseFloat(value);
         this.settings.llm[key] = isNaN(numValue) ? value : numValue;
-      } else if (['max_tokens', 'prompt_truncate_len', 'top_k'].includes(key)) {
+      } else if (['max_tokens', 'top_k'].includes(key)) {
         const numValue = parseInt(value, 10);
         this.settings.llm[key] = isNaN(numValue) ? value : numValue;
       } else if (key === 'model') {
