@@ -37,7 +37,7 @@ self.onmessage = async function(event) {
         let textForApi;
 
         // Check if the main thread sent any messages
-        if (messages && messages.length > 0) {
+        if (messages) {
             // User provided messages: unshift/prepend the fetched system instruction
             textForApi = instructionText + '\n\n' + messages;
             console.log('All text for API:', textForAPI)
