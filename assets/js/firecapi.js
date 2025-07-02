@@ -32,16 +32,19 @@ self.onmessage = async function(event) {
             console.error('Worker: Error during instruction file fetch:', fetchError.message, '. Using default instruction.');
             instructionText = "You are a helpful assistant."; // Default instruction on any fetch error
         }
-
-        // --- 3. Prepare messages for the API call ---
-        let textForApi;
-
+        
+        // --- 3. Prepare text with instruction as a prompt for the API call ---
+        let textForAPI;
+        console.log('messages', messages)
+        console.log('instructionText', messages.length)
+        
         // Check if the main thread sent any messages
-        if (messages) {
+        if (messages && messages.length > 0) {
             // User provided messages: unshift/prepend the fetched system instruction
-            textForApi = instructionText + '\n\n' + messages;
+            textForAPI = instructionText + '\n\n' + messages;
             console.log('All text for API:', textForAPI)
         } else {
+            // No messages from user, or an empty array: use the system instruction and a default user prompt
             textForAPI = instructionText + '\n\n' + "What model are you?" // Default user prompt
         }
 
