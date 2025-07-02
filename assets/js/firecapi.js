@@ -35,9 +35,6 @@ self.onmessage = async function(event) {
         
         // --- 3. Prepare text with instruction as a prompt for the API call ---
         let textForAPI;
-        console.log('messages', messages)
-        console.log('instructionText', messages.length)
-        
         // Check if the main thread sent any messages
         if (messages && messages.length > 0) {
             // User provided messages: unshift/prepend the fetched system instruction
@@ -70,7 +67,7 @@ self.onmessage = async function(event) {
         // Merge default parameters, then incoming user parameters (which might override temp, max_tokens, etc.),
         const finalApiPayload = {
             ...defaultApiParameters,
-            prompt: textForApi      // Ensure our carefully constructed messages array is used
+            prompt: textForAPI      // Ensure our carefully constructed messages array is used
         };
         console.log('Worker: Here is the final API payload:', finalApiPayload);
 
